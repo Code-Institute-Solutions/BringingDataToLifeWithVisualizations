@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 and Scalable Vector Graphics</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css"/>
+    <style>
+        div {
+            clear: left;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+
+</head>
+<body>
+    <h1>Data Visualisation</h1>
+
+    <h2>DC Scatter Plot</h2>
+
+    <div>
+        <h3>Transactions Per Date, colour coded by person</h3>
+        <div id="scatter-plot"></div>
+    </div>
+
+    <script>
+    queue()
+        .defer(d3.json, "data/transactions.json")
+        .await(makeGraphs);
+
+    function makeGraphs(error, transactionsData) {
+        var ndx = crossfilter(transactionsData);
+
+        var parseDate = d3.time.format("%d/%m/%Y").parse;
+        transactionsData.forEach(function(d){
+            d.date = parseDate(d.date);
+        });
+
+        var dateDim = ndx.dimension(function(d){
+            return d.date;
+        });
+
+        var tradeColors = d3.scale.ordinal()
+            .domain(["Alice", "Tom", "Bob"])
+            .range(["red", "green", "blue"]);
+
+
+        var minDate = dateDim.bottom(1)[0].date;
+        var maxDate = dateDim.top(1)[0].date;
+        var spendDim = ndx.dimension(function(d){
+            return [d.date, d.spend, d];
+        });
+        var spendGroup = spendDim.group();
+
+        var spend_chart = dc.scatterPlot("#scatter-plot");
+        spend_chart
+            .width(768)
+            .height(480)
+            .x(d3.time.scale().domain([minDate, maxDate]))
+            .brushOn(false)
+            .symbolSize(8)
+            .clipPadding(10)
+            .yAxisLabel("Amount Spent")
+            .title(function (d) {
+                return d.key[2].name + " spent " + d.key[2].spend + " in store " + d.key[2].store;
+            })
+            .colorAccessor(function (d) {
+                return d.key[2].name;
+            })
+            .colors(tradeColors)
+            .dimension(spendDim)
+            .group(spendGroup);
+
+        dc.renderAll();
+    }
+    </script>
+</body>
+</html>

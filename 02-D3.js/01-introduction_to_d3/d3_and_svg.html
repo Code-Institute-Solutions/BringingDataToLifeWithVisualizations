@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 and Scalable Vector Graphics</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+</head>
+<body>
+    <h1>Data Visualisation</h1>
+
+    <h2>D3 and Scalable Vector Graphics</h2>
+
+    <div id="draw-here"></div>
+
+    <script>
+    var w = 500;
+    var h = 200;
+    var data = [40, 50, 10, 30, 20];
+
+    //Create SVG element
+    var svg = d3.select("#draw-here")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+    svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d, i) {
+            return 50 + (i * 100);
+        })
+        .attr("cy", h / 2)
+        .attr("r", function (d) {
+            return d;
+        });
+    </script>
+</body>
+</html>

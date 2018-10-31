@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 and Scalable Vector Graphics</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        var scale = d3.scale.linear()
+                      .domain([0, 600])
+                      .range([0, 500]);
+        
+
+        console.log(scale(0));
+        console.log(scale(600));
+        console.log(scale(500));
+    </script>
+</body>
+</html>

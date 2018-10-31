@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 and Scalable Vector Graphics</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+</head>
+<body>
+    <h1>Data Visualisation</h1>
+
+    <h2>D3 Charting</h2>
+
+    <div id="draw-here"></div>
+
+    <script>
+    var w = 500;
+    var h = 500;
+    var barPadding = 1;
+
+    var dataset = [
+        450, 100, 100, 279, 500, 25, 350, 120, 80, 130,
+        110, 102, 375, 200, 175, 168, 180, 230, 205,
+    ];
+
+    var colWidth = w / dataset.length;
+    var barWidth = colWidth - barPadding;
+
+    var svg = d3.select("#draw-here")
+                .append("svg")
+                .attr("height", h)
+                .attr("width", w);
+
+    svg.selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("x", function(d, i) {
+            return i * colWidth;
+        })
+        .attr("y", function(d) {
+            return h - d;
+        })
+        .attr("height", function(d) {
+            return d;
+        })
+        .attr("width", barWidth);
+
+    svg.selectAll("text")
+        .data(dataset)
+        .enter()
+        .append("text")
+        .text(function(d) {
+            return d;
+        })
+        .attr("text-anchor", "middle")
+        .attr("x", function(d, i) {
+            return i * colWidth + barWidth / 2;
+        })
+        .attr("y", function(d) {
+            return h - d + 14;
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "white");
+    </script>
+</body>
+</html>
