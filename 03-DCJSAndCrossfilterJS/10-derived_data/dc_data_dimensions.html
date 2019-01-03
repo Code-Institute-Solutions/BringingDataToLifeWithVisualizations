@@ -38,7 +38,7 @@
         var ndx = crossfilter(transactionsData);
         
         var size_dimension = ndx.dimension(function (d) {
-            if (d.speed > 200)
+            if (d.spend > 200)
                 return "Big";
             else
                 return "Small"
