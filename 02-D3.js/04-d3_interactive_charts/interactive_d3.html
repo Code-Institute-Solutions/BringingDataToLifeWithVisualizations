@@ -58,7 +58,7 @@
     // Generates a random set of data and filters it before plotting it as a bar chart
     // Removes any bars less than the value in the filter input box
     function filter_data() {
-        var data = generate_randon_data(numberOfBars);
+        var data = generate_random_data(numberOfBars);
         data = data.filter(function (d) { return d >= get_filter_value(); });
         plot_data(data);
     }
