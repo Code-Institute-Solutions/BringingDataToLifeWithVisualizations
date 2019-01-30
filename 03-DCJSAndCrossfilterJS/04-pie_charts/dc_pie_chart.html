@@ -54,23 +54,23 @@
                 .group(total_spend_per_person);
             
             var store_dim = ndx.dimension(dc.pluck('store'));
-            var total_spend_per_store = name_dim.group().reduceSum(dc.pluck('spend'));
+            var total_spend_per_store = store_dim.group().reduceSum(dc.pluck('spend'));
 
             dc.pieChart('#per-store-chart')
                 .height(330)
                 .radius(90)
                 .transitionDuration(1500)
-                .dimension(name_dim)
+                .dimension(store_dim)
                 .group(total_spend_per_store);
             
             var state_dim = ndx.dimension(dc.pluck('state'));
-            var total_spend_per_state = name_dim.group().reduceSum(dc.pluck('spend'));
+            var total_spend_per_state = state_dim.group().reduceSum(dc.pluck('spend'));
 
             dc.pieChart('#per-state-chart')
                 .height(330)
                 .radius(90)
                 .transitionDuration(1500)
-                .dimension(name_dim)
+                .dimension(state_dim)
                 .group(total_spend_per_state);
             
             dc.renderAll();
